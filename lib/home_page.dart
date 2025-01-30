@@ -1,5 +1,7 @@
+// This is a Flutter application
 import 'package:flutter/material.dart';
 
+// Importing necessary widgets and components
 import 'journal.dart';
 import 'calendar.dart';
 import 'quotes.dart';
@@ -13,18 +15,21 @@ class JournalHome extends StatefulWidget {
 class _JournalHomeState extends State<JournalHome> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+  // Initialize the tab controller in the initState method
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
   }
 
+  // Dispose of the tab controller when the widget is disposed
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
   }
 
+  // Build method to construct the UI
   @override
   Widget build(BuildContext context) {
     return Scaffold(
