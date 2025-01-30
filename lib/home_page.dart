@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'journal.dart';
+import 'calendar.dart';
+import 'quotes.dart';
+import 'pictures.dart';
+
 class JournalHome extends StatefulWidget {
   @override
   _JournalHomeState createState() => _JournalHomeState();
@@ -38,22 +43,17 @@ class _JournalHomeState extends State<JournalHome> with SingleTickerProviderStat
                   // Handle settings
                 },
               ),
-              Text(
-                'Welcome back!',
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
+              Text('Journal Home'),
               IconButton(
-                icon: Icon(Icons.search, color: Colors.white),
+                icon: Icon(Icons.notifications),
                 onPressed: () {
-                  // Handle search
+                  // Handle notifications
                 },
               ),
             ],
           ),
           bottom: TabBar(
             controller: _tabController,
-            labelColor: Colors.white,
-            unselectedLabelColor: Colors.grey,
             tabs: [
               Tab(text: 'Journal'),
               Tab(text: 'Calendar'),
@@ -66,10 +66,10 @@ class _JournalHomeState extends State<JournalHome> with SingleTickerProviderStat
       body: TabBarView(
         controller: _tabController,
         children: [
-          Center(child: Text('Journal Content')),
-          Center(child: Text('Calendar Content')),
-          Center(child: Text('Quotes Content')),
-          Center(child: Text('Pictures Content')),
+          JournalContent(),
+          CalendarContent(),
+          QuotesContent(),
+          PicturesContent(),
         ],
       ),
     );
