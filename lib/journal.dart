@@ -12,7 +12,7 @@ class JournalContent extends StatelessWidget {
           child: ListTile(
             title: Text('Date'), // Placeholder for date
             subtitle: Text('Preview text'), // Placeholder for preview text
-            trailing: Icon(Icons.smile_o), // Smiley face icon
+            trailing: Icon(Icons.sentiment_satisfied), // Smiley face icon
           ),
         ),
       ),
