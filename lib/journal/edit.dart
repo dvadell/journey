@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:localstorage/localstorage.dart';
+import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class EditJournalEntryScreen extends StatefulWidget {
   @override
-  _EditJournalEntryScreen createState() => _EditJournalEntryScreen();
+  _EditJournalEntryScreenState createState() => _EditJournalEntryScreenState();
 }
 
-class _EditJournalEntryScreen extends State<EditJournalEntryScreen> {
+class _EditJournalEntryScreenState extends State<EditJournalEntryScreen> {
   final TextEditingController _textEditingController = TextEditingController();
   String _selectedMood = 'Happy';
 
@@ -18,7 +19,7 @@ class _EditJournalEntryScreen extends State<EditJournalEntryScreen> {
     'Sad': Icons.sentiment_very_dissatisfied,
   };
 
-  final LocalStorage storage = LocalStorage('journal_entries');
+  final FlutterSecureStorage storage = FlutterSecureStorage();
 
   @override
   void dispose() {
@@ -31,11 +32,17 @@ class _EditJournalEntryScreen extends State<EditJournalEntryScreen> {
     final DateTime date = DateTime.now();
     final String mood = _selectedMood;
 
-    // Save the entry to localstorage
-    await storage.setItem('entry', {'date': DateFormat.yMd().format(date), 'mood': mood, 'text': text});
+    // Create a map and serialize it to JSON
+    Map<String, dynamic> entryData = {
+      'date': DateFormat.yMd().format(date),
+      'mood': mood,
+      'text': text,
+    };
+    String jsonEntry = jsonEncode(entryData);
 
+    // Save the entry to secure storage
+    await storage.write(key: 'entry', value: jsonEntry);
     print('Saved journal entry - Date: $date, Mood: $mood, Text: $text');
-
     Navigator.pop(context);
   }
 
@@ -61,7 +68,6 @@ class _EditJournalEntryScreen extends State<EditJournalEntryScreen> {
               style: TextStyle(fontSize: 16.0),
             ),
             SizedBox(height: 20.0),
-
             // Mood selection
             Text(
               'Mood',
@@ -92,7 +98,6 @@ class _EditJournalEntryScreen extends State<EditJournalEntryScreen> {
               }).toList(),
             ),
             SizedBox(height: 20.0),
-
             // Journal text input
             Text(
               'Journal Entry',
@@ -108,7 +113,6 @@ class _EditJournalEntryScreen extends State<EditJournalEntryScreen> {
               ),
             ),
             SizedBox(height: 20.0),
-
             // Save button
             ElevatedButton(
               onPressed: _saveEntry,
