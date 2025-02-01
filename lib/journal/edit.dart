@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:localstorage/localstorage.dart';
 
 class EditJournalEntryScreen extends StatefulWidget {
   @override
@@ -17,6 +18,8 @@ class _EditJournalEntryScreen extends State<EditJournalEntryScreen> {
     'Sad': Icons.sentiment_very_dissatisfied,
   };
 
+  final LocalStorage storage = LocalStorage('journal_entries');
+
   @override
   void dispose() {
     _textEditingController.dispose();
@@ -28,7 +31,9 @@ class _EditJournalEntryScreen extends State<EditJournalEntryScreen> {
     final DateTime date = DateTime.now();
     final String mood = _selectedMood;
 
-    // TODO: Save the entry to your database or storage
+    // Save the entry to localstorage
+    await storage.setItem('entry', {'date': DateFormat.yMd().format(date), 'mood': mood, 'text': text});
+
     print('Saved journal entry - Date: $date, Mood: $mood, Text: $text');
 
     Navigator.pop(context);
