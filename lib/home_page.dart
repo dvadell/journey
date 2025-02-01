@@ -18,6 +18,15 @@ class JournalHome extends StatefulWidget {
 class _JournalHomeState extends State<JournalHome> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+  void _showMenu(BuildContext context) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return MenuScreen();
+      },
+    );
+  }
+
   // Initialize the tab controller in the initState method
   @override
   void initState() {
@@ -47,10 +56,7 @@ class _JournalHomeState extends State<JournalHome> with SingleTickerProviderStat
             children: [
               IconButton(
                 icon: Icon(Icons.menu, color: Colors.white),
-                onPressed: () {
-                  // Handle settings
-                  Navigator.pushNamed(context, '/menu');
-                },
+                onPressed: () => _showMenu(context),
               ),
               Text('Welcome Back!', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
               IconButton(
@@ -68,7 +74,6 @@ class _JournalHomeState extends State<JournalHome> with SingleTickerProviderStat
                 Tab(child: Text('Calendar', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))),
                 Tab(child: Text('Quotes', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))),
                 Tab(child: Text('Pictures', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))),
-                Tab(child: Text('Menu', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))),
             ],
           ),
         ),
