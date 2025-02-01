@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:convert';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 class EditJournalEntryScreen extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class EditJournalEntryScreen extends StatefulWidget {
 class _EditJournalEntryScreenState extends State<EditJournalEntryScreen> {
   final TextEditingController _textEditingController = TextEditingController();
   String _selectedMood = 'Happy';
-
+  
   // Map mood strings to actual Flutter icons
   Map<String, IconData> _moodIcons = {
     'Happy': Icons.sentiment_very_satisfied,
@@ -19,31 +20,29 @@ class _EditJournalEntryScreenState extends State<EditJournalEntryScreen> {
     'Sad': Icons.sentiment_very_dissatisfied,
   };
 
-  final FlutterSecureStorage storage = FlutterSecureStorage();
+  late Database _database;
 
   @override
-  void dispose() {
-    _textEditingController.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    initializeDatabase();
   }
 
-  Future<void> _saveEntry() async {
-    final String text = _textEditingController.text;
-    final DateTime date = DateTime.now();
-    final String mood = _selectedMood;
-
-    // Create a map and serialize it to JSON
-    Map<String, dynamic> entryData = {
-      'date': DateFormat.yMd().format(date),
-      'mood': mood,
-      'text': text,
-    };
-    String jsonEntry = jsonEncode(entryData);
-
-    // Save the entry to secure storage
-    await storage.write(key: 'entry', value: jsonEntry);
-    print('Saved journal entry - Date: $date, Mood: $mood, Text: $text');
-    Navigator.pop(context);
+  Future<void> initializeDatabase() async {
+    _database = await openDatabase(
+      join(await getDatabasesPath(), 'journal_database.db'),
+      onCreate: (db, version) {
+        return db.execute('''
+          CREATE TABLE entries (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            date TEXT NOT NULL,
+            mood TEXT NOT NULL,
+            content TEXT NOT NULL
+          )
+        ''');
+      },
+      version: 1,
+    );
   }
 
   @override
@@ -62,66 +61,74 @@ class _EditJournalEntryScreenState extends State<EditJournalEntryScreen> {
               'Date',
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 4.0),
-            Text(
-              DateFormat.yMd().format(DateTime.now()),
-              style: TextStyle(fontSize: 16.0),
-            ),
-            SizedBox(height: 20.0),
+            Text(DateFormat.yMd().format(DateTime.now())),
+            
             // Mood selection
+            SizedBox(height: 20),
             Text(
               'Mood',
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 4.0),
-            DropdownButton<String>(
-              value: _selectedMood,
-              onChanged: (String? newValue) {
-                setState(() {
-                  if (newValue != null) {
-                    _selectedMood = newValue;
-                  }
-                });
-              },
-              items: <String>['Happy', 'Neutral', 'Sad']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Row(
-                    children: [
-                      Icon(_moodIcons[value]!),
-                      SizedBox(width: 8.0),
-                      Text(value),
-                    ],
+            Row(
+              children: _moodIcons.entries.map((entry) {
+                return GestureDetector(
+                  onTap: () => setState(() => _selectedMood = entry.key),
+                  child: Icon(
+                    entry.value,
+                    size: 40,
+                    color: _selectedMood == entry.key ? Colors.blue : Colors.grey[300],
                   ),
                 );
               }).toList(),
             ),
-            SizedBox(height: 20.0),
-            // Journal text input
-            Text(
-              'Journal Entry',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 4.0),
+            
+            SizedBox(height: 20),
             TextField(
               controller: _textEditingController,
+              decoration: InputDecoration(hintText: 'Enter your journal entry'),
               maxLines: null,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Write about your day...',
-              ),
             ),
-            SizedBox(height: 20.0),
-            // Save button
+            
+            SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _saveEntry,
-              child: Text('Save'),
+              onPressed: () async {
+                await saveEntry(context);
+              },
+              child: Text('Save Entry'),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> saveEntry(BuildContext context) async {
+    try {
+      await _database.transaction((txn) async {
+        await txn.rawInsert('''
+          INSERT INTO entries (date, mood, content)
+          VALUES (?, ?, ?)
+        ''', [
+          DateFormat.yMd().format(DateTime.now()),
+          _selectedMood,
+          _textEditingController.text
+        ]);
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Entry saved successfully')),
+      );
+    } catch (e) {
+      print('Error saving entry: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to save entry')),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
   }
 }
 
