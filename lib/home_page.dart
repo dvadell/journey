@@ -7,6 +7,9 @@ import 'calendar.dart';
 import 'quotes.dart';
 import 'pictures.dart';
 
+// Import the new menu screen
+import 'menu.dart';
+
 class JournalHome extends StatefulWidget {
   @override
   _JournalHomeState createState() => _JournalHomeState();
@@ -19,7 +22,7 @@ class _JournalHomeState extends State<JournalHome> with SingleTickerProviderStat
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
   }
 
   // Dispose of the tab controller when the widget is disposed
@@ -46,6 +49,7 @@ class _JournalHomeState extends State<JournalHome> with SingleTickerProviderStat
                 icon: Icon(Icons.menu, color: Colors.white),
                 onPressed: () {
                   // Handle settings
+                  Navigator.pushNamed(context, '/menu');
                 },
               ),
               Text('Welcome Back!', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
@@ -64,6 +68,7 @@ class _JournalHomeState extends State<JournalHome> with SingleTickerProviderStat
                 Tab(child: Text('Calendar', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))),
                 Tab(child: Text('Quotes', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))),
                 Tab(child: Text('Pictures', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))),
+                Tab(child: Text('Menu', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))),
             ],
           ),
         ),
@@ -75,7 +80,22 @@ class _JournalHomeState extends State<JournalHome> with SingleTickerProviderStat
           CalendarContent(),
           QuotesContent(),
           PicturesContent(),
+          MenuScreen(), // New screen for the menu
         ],
+      ),
+    );
+  }
+}
+class MenuScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Menu'),
+        backgroundColor: Colors.purple,
+      ),
+      body: Center(
+        child: Text('This is a dummy menu screen.'),
       ),
     );
   }
