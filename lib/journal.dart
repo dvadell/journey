@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'new_screen.dart'; // Import the new screen file
 
-class JournalContent extends StatelessWidget {
+class _JournalContentState extends State<JournalContent> {
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -24,15 +24,12 @@ class JournalContent extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20),
-          ElevatedButton(
+          FloatingActionButton(
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => NewScreen()));
             },
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-              primary: Colors.blue,
-            ),
-            child: Text('Add Entry'),
+              backgroundColor: Colors.purple,
+              child: Icon(Icons.add, size: 48)
           ),
         ],
       ),
