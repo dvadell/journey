@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-class NewScreen extends StatelessWidget {
+class EditJournalEntryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

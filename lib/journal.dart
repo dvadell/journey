@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'new_screen.dart'; // Import the new screen file
+import 'journal/edit.dart'; // Import the new screen file
 
 class JournalContent extends StatefulWidget {
   @override
@@ -40,7 +40,7 @@ class _JournalContentState extends State<JournalContent> {
             child: Center(
               child: InkWell(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => NewScreen()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => EditJournalEntryScreen()));
                 },
                 child: Icon(Icons.add, size: 48, color: Colors.white),
               ),
