@@ -48,7 +48,7 @@ class _JournalHomeState extends State<JournalHome> with SingleTickerProviderStat
                   // Handle settings
                 },
               ),
-              Text('Journal Home'),
+              Text('Welcome Back!', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
               IconButton(
                 icon: Icon(Icons.notifications),
                 onPressed: () {
@@ -60,10 +60,10 @@ class _JournalHomeState extends State<JournalHome> with SingleTickerProviderStat
           bottom: TabBar(
             controller: _tabController,
             tabs: [
-              Tab(text: 'Journal'),
-              Tab(text: 'Calendar'),
-              Tab(text: 'Quotes'),
-              Tab(text: 'Pictures'),
+                Tab(child: Text('Journal', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))),
+                Tab(child: Text('Calendar', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))),
+                Tab(child: Text('Quotes', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))),
+                Tab(child: Text('Pictures', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))),
             ],
           ),
         ),
