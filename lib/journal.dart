@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'new_screen.dart'; // Import the new screen file
 
+class JournalContent extends StatefulWidget {
+  @override
+  _JournalContentState createState() => _JournalContentState();
+}
+
 class _JournalContentState extends State<JournalContent> {
   @override
   Widget build(BuildContext context) {
@@ -24,15 +29,26 @@ class _JournalContentState extends State<JournalContent> {
             ),
           ),
           SizedBox(height: 20),
-          FloatingActionButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => NewScreen()));
-            },
-              backgroundColor: Colors.purple,
-              child: Icon(Icons.add, size: 48)
+          // The circular + button
+          Container(
+            width: 56.0,
+            height: 56.0,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.purple,
+            ),
+            child: Center(
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => NewScreen()));
+                },
+                child: Icon(Icons.add, size: 48, color: Colors.white),
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 }
+
