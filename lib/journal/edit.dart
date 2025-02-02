@@ -61,7 +61,7 @@ class _EditJournalEntryScreenState extends State<EditJournalEntryScreen> {
               'Date',
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
-            Text(DateFormat.yMd().format(DateTime.now())),
+            Text(DateFormat('yyyy-MM-dd').format(DateTime.now())),
             
             // Mood selection
             SizedBox(height: 20),
@@ -109,7 +109,7 @@ class _EditJournalEntryScreenState extends State<EditJournalEntryScreen> {
           INSERT INTO entries (date, mood, content)
           VALUES (?, ?, ?)
         ''', [
-          DateFormat.yMd().format(DateTime.now()),
+          DateFormat('yyyy-MM-dd').format(DateTime.now()),
           _selectedMood,
           _textEditingController.text
         ]);

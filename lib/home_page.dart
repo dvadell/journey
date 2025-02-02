@@ -31,7 +31,7 @@ class _JournalHomeState extends State<JournalHome> with SingleTickerProviderStat
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
   }
 
   // Dispose of the tab controller when the widget is disposed

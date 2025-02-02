@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'journal/edit.dart'; // Import the new screen file
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 import 'components/journal_card.dart';
+import 'journal/edit.dart'; // Import the new screen file
 
 class JournalContent extends StatefulWidget {
   @override
@@ -8,17 +10,41 @@ class JournalContent extends StatefulWidget {
 }
 
 class _JournalContentState extends State<JournalContent> {
-  final List<JournalEntry> journalEntries = [
-    JournalEntry(date: DateTime(2023, 10, 1), text: "Today was a good day!", mood: "happy"),
-    JournalEntry(date: DateTime(2023, 9, 30), text: "It's okay.", mood: "neutral"),
-    JournalEntry(date: DateTime(2023, 9, 29), text: "Not so great.", mood: "sad"),
-    JournalEntry(date: DateTime(2023, 9, 28), text: "It was a beautiful day with Fujii Kaze....", mood: "happy"),
-    JournalEntry(date: DateTime(2023, 9, 27), text: "I met Fujii Kaze at the park.", mood: "happy"),
-    JournalEntry(date: DateTime(2023, 9, 26), text: "Un dia fome.", mood: "neutral"),
-    JournalEntry(date: DateTime(2023, 9, 25), text: "Not so great.", mood: "sad"),
-    JournalEntry(date: DateTime(2023, 9, 24), text: "Tuve un dia genial!!! \o/.", mood: "happy"),
-    JournalEntry(date: DateTime(2023, 9, 23), text: "Not so great.", mood: "neutral"),
-  ];
+  final List<JournalEntry> journalEntries = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchJournalEntries();
+  }
+
+  Future<void> fetchJournalEntries() async {
+    // Open the database and fetch entries
+    var db = await openDatabase(
+      join(await getDatabasesPath(), 'journal_database.db'),
+      version: 1,
+    );
+
+    List<Map<String, dynamic>> entries = await db.rawQuery('SELECT * FROM entries');
+    
+    setState(() {
+      journalEntries.clear();
+      for (var entry in entries) {
+        print('DMV: Adding entry');
+        try {
+          journalEntries.add(
+            JournalEntry(
+              date: DateTime.parse(entry['date']),
+              text: entry['content'],
+              mood: entry['mood'].toLowerCase(),
+            ),
+          );
+        } catch (e) {
+          print('DMV: invalid entry $entry: $e');
+        };
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +94,6 @@ class JournalEntry {
   final DateTime date;
   final String text;
   final String mood;
-
   JournalEntry({required this.date, required this.text, required this.mood});
 }
+
