@@ -86,10 +86,10 @@ class _JournalHomeState extends State<JournalHome> with SingleTickerProviderStat
             bottom: TabBar(
               controller: _tabController,
               tabs: [
-                Tab(child: Text('Journal', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
-                Tab(child: Text('Calendar', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
-                Tab(child: Text('Quotes', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
-                Tab(child: Text('Pictures', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
+                Tab(text: 'Journal'),
+                Tab(text: 'Calendar'), 
+                Tab(text: 'Quotes'),
+                Tab(text: 'Pictures'),
               ],
             ),
           ),

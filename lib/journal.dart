@@ -25,7 +25,7 @@ class _JournalContentState extends State<JournalContent> {
       version: 1,
     );
 
-    List<Map<String, dynamic>> entries = await db.rawQuery('SELECT * FROM entries');
+    List<Map<String, dynamic>> entries = await db.rawQuery('SELECT * FROM entries ORDER BY date DESC');
     
     setState(() {
       journalEntries.clear();

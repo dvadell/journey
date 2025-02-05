@@ -9,6 +9,7 @@ class AppThemes {
       backgroundColor: Color(0xFF673AB7),
       elevation: 0,
       titleTextStyle: TextStyle(
+        fontFamily: 'Poppins',
         fontSize: 20,
         fontWeight: FontWeight.w500,
         color: Colors.white,
@@ -25,10 +26,23 @@ class AppThemes {
         borderRadius: BorderRadius.circular(12),
       ),
     ),
+    tabBarTheme: TabBarTheme(
+      labelColor: Colors.white,
+      labelStyle: TextStyle(
+        fontFamily: 'Poppins',
+        fontWeight: FontWeight.bold,
+        fontSize: 16,
+      ),
+      unselectedLabelColor: Colors.white70,
+      unselectedLabelStyle: TextStyle(
+        fontFamily: 'Poppins',
+        fontSize: 16,
+      ),
+    ),
   );
 
   static final darkTheme = ThemeData(
-    brightness: Brightness.dark,
+        brightness: Brightness.dark,
     primaryColor: Colors.deepPurple,
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.deepPurple,
