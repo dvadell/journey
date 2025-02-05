@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class EditJournalEntryScreen extends StatefulWidget {
   @override
@@ -14,10 +15,11 @@ class _EditJournalEntryScreenState extends State<EditJournalEntryScreen> {
   String _selectedMood = 'Happy';
   
   // Map mood strings to actual Flutter icons
-  Map<String, IconData> _moodIcons = {
-    'Happy': Icons.sentiment_very_satisfied,
-    'Neutral': Icons.sentiment_neutral,
-    'Sad': Icons.sentiment_very_dissatisfied,
+  Map<String, String> _moodIcons = {
+    'Happy': 'assets/emoji-laugh.svg',
+    'Cool': 'assets/emoji-cool.svg', 
+    'Crazy': 'assets/emoji-crazy.svg',
+    'Sad': 'assets/emoji-sad.svg',
   };
 
   late Database _database;
@@ -47,6 +49,17 @@ class _EditJournalEntryScreenState extends State<EditJournalEntryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    void _animateSelectedEmoji(BuildContext context) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Mood set to ${_selectedMood}'),
+          duration: Duration(milliseconds: 800),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('New Journal Entry'),
@@ -72,16 +85,39 @@ class _EditJournalEntryScreenState extends State<EditJournalEntryScreen> {
             Row(
               children: _moodIcons.entries.map((entry) {
                 return GestureDetector(
-                  onTap: () => setState(() => _selectedMood = entry.key),
-                  child: Icon(
-                    entry.value,
-                    size: 40,
-                    color: _selectedMood == entry.key ? Colors.blue : Colors.grey[300],
-                  ),
-                );
+                  onTap: () {
+                    setState(() => _selectedMood = entry.key);
+                    // Visual feedback
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Selected mood: ${entry.key}'),
+                        duration: Duration(seconds: 1),
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                    _animateSelectedEmoji(context);
+                  },
+                  child: AnimatedContainer(
+                      duration: Duration(milliseconds: 200),
+                      padding: EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                        border: _selectedMood == entry.key 
+                          ? Border(bottom: BorderSide(color: Theme.of(context).primaryColor, width: 3))
+                          : null,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Transform.scale(
+                        scale: _selectedMood == entry.key ? 1.2 : 1.0,
+                        child: SvgPicture.asset(
+                          entry.value,
+                          height: 40,
+                        ),
+                      ),
+                    ),
+                  );
               }).toList(),
             ),
-            
             SizedBox(height: 20),
             TextField(
               controller: _textEditingController,

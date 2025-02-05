@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 
 class JournalEntryCard extends StatelessWidget {
   final DateTime date;
@@ -64,10 +66,9 @@ class JournalEntryCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                Icon(
+                SvgPicture.asset(
                   _getMoodIcon(),
-                  size: 32,
-                  color: Colors.amber,
+                  height: 32,
                 ),
               ],
             ),
@@ -95,17 +96,19 @@ class JournalEntryCard extends StatelessWidget {
            [date.weekday - 1];
   }
 
-  IconData _getMoodIcon() {
-    switch (mood.toLowerCase()) {
-      case 'happy':
-        return Icons.sentiment_very_satisfied;
-      case 'neutral':
-        return Icons.sentiment_neutral;
-      case 'sad':
-        return Icons.sentiment_dissatisfied;
-      default:
-        return Icons.sentiment_neutral;
-    }
+String _getMoodIcon() {
+  switch (mood.toLowerCase()) {
+    case 'happy':
+      return 'assets/emoji-laugh.svg';
+    case 'cool':
+      return 'assets/emoji-cool.svg';
+    case 'crazy': 
+      return 'assets/emoji-crazy.svg';
+    case 'sad':
+      return 'assets/emoji-sad.svg';
+    default:
+      return 'assets/emoji-neutral.svg';
   }
+}
 }
 

@@ -39,6 +39,7 @@ dependencies:
   flutter_secure_storage: ^9.2.4
   sqflite: ^2.4.1
   path: ^1.9.0
+  flutter_svg: ^2.0.17
 
 dev_dependencies:
   flutter_test:
@@ -100,3 +101,8 @@ flutter:
           weight: 700
         - asset: assets/fonts/Poppins-Light.ttf
           weight: 300
+  assets:
+    - assets/emoji-cool.svg
+    - assets/emoji-crazy.svg 
+    - assets/emoji-laugh.svg
+    - assets/emoji-sad.svg
