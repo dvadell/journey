@@ -1,13 +1,11 @@
-// This is a Flutter application
 import 'package:flutter/material.dart';
+import 'themes.dart';
 
 // Importing necessary widgets and components
 import 'journal.dart';
 import 'calendar.dart';
 import 'quotes.dart';
 import 'pictures.dart';
-
-// Import the new menu screen
 import 'menu.dart';
 
 class JournalHome extends StatefulWidget {
@@ -17,6 +15,7 @@ class JournalHome extends StatefulWidget {
 
 class _JournalHomeState extends State<JournalHome> with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  bool _isDarkMode = false;
 
   void _showMenu(BuildContext context) async {
     await showModalBottomSheet<void>(
@@ -41,56 +40,74 @@ class _JournalHomeState extends State<JournalHome> with SingleTickerProviderStat
     super.dispose();
   }
 
+  void _toggleTheme() {
+    setState(() {
+      _isDarkMode = !_isDarkMode;
+    });
+  }
+
   // Build method to construct the UI
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(100.0),
-        child: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.purple,
-          titleSpacing: 0,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                icon: Icon(Icons.menu, color: Colors.white),
-                onPressed: () => _showMenu(context),
-              ),
-              Text('Welcome Back!', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w500, fontSize: 36)),
-              IconButton(
-                icon: Icon(Icons.notifications),
-                onPressed: () {
-                  // Handle notifications
-                },
-              ),
-            ],
-          ),
-          bottom: TabBar(
-            controller: _tabController,
-            tabs: [
-                Tab(child: Text('Journal', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))),
-                Tab(child: Text('Calendar', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))),
-                Tab(child: Text('Quotes', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))),
-                Tab(child: Text('Pictures', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))),
-            ],
+    return MaterialApp(
+      theme: AppThemes.lightTheme,
+      darkTheme: AppThemes.darkTheme,
+      themeMode: _isDarkMode ? ThemeMode.dark : ThemeMode.light,
+      home: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(100.0),
+          child: AppBar(
+            automaticallyImplyLeading: false,
+            titleSpacing: 0,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.menu, color: Colors.white),
+                  onPressed: () => _showMenu(context),
+                ),
+                Text('Welcome Back!'),
+                Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(_isDarkMode ? Icons.light_mode : Icons.dark_mode),
+                      onPressed: _toggleTheme,
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.notifications),
+                      onPressed: () {
+                        // Handle notifications
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            bottom: TabBar(
+              controller: _tabController,
+              tabs: [
+                Tab(child: Text('Journal', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
+                Tab(child: Text('Calendar', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
+                Tab(child: Text('Quotes', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
+                Tab(child: Text('Pictures', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
+              ],
+            ),
           ),
         ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          JournalContent(),
-          CalendarContent(),
-          QuotesContent(),
-          PicturesContent(),
-          MenuScreen(), // New screen for the menu
-        ],
+        body: TabBarView(
+          controller: _tabController,
+          children: [
+            JournalContent(),
+            CalendarContent(),
+            QuotesContent(),
+            PicturesContent(),
+          ],
+        ),
       ),
     );
   }
 }
+
 class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
