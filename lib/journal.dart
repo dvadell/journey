@@ -48,12 +48,23 @@ class _JournalContentState extends State<JournalContent> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+    return Scaffold(
+      backgroundColor: Colors.grey[50],
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 16.0),
+            child: Text(
+              "Recent entries",
+              style: TextStyle(
+                fontSize: 20,
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
           Expanded(
-            flex: 1,
             child: ListView.builder(
               itemCount: journalEntries.length,
               itemBuilder: (context, index) {
@@ -66,21 +77,26 @@ class _JournalContentState extends State<JournalContent> {
               },
             ),
           ),
-          SizedBox(height: 20),
-          // The circular + button
-          Container(
-            width: 56.0,
-            height: 56.0,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.purple,
-            ),
-            child: Center(
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => EditJournalEntryScreen()));
-                },
-                child: Icon(Icons.add, size: 48, color: Colors.white),
+
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 20.0),
+              child: Container(
+                width: 56.0,
+                height: 56.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.purple,
+                ),
+                child: Center(
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => EditJournalEntryScreen()));
+                    },
+                    child: Icon(Icons.add, size: 48, color: Colors.white),
+                  ),
+                ),
               ),
             ),
           ),
