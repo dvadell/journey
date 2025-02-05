@@ -58,7 +58,7 @@ class _JournalHomeState extends State<JournalHome> with SingleTickerProviderStat
                 icon: Icon(Icons.menu, color: Colors.white),
                 onPressed: () => _showMenu(context),
               ),
-              Text('Welcome Back!', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              Text('Welcome Back!', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w500, fontSize: 36)),
               IconButton(
                 icon: Icon(Icons.notifications),
                 onPressed: () {
