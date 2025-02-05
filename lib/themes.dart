@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppThemes {
   static final lightTheme = ThemeData(
+    fontFamily: 'Poppins',
     brightness: Brightness.light,
     primaryColor: Color(0xFF673AB7),
     scaffoldBackgroundColor: Colors.white,
@@ -42,7 +43,8 @@ class AppThemes {
   );
 
   static final darkTheme = ThemeData(
-        brightness: Brightness.dark,
+    fontFamily: 'Poppins',
+    brightness: Brightness.dark,
     primaryColor: Colors.deepPurple,
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.deepPurple,

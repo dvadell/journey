@@ -14,6 +14,8 @@ class JournalEntryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen width
+    double screenWidth = MediaQuery.of(context).size.width;
     return Card(
       elevation: 2,
       margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
@@ -38,17 +40,17 @@ class JournalEntryCard extends StatelessWidget {
                         Text(
                           date.day.toString(),
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: screenWidth * 0.09,  // 48
                             fontWeight: FontWeight.bold,
-                            color: Theme.of(context).primaryColor,
+                            color: Theme.of(context).colorScheme.onBackground,
                           ),
                         ),
                         SizedBox(width: 4),
                         Text(
                           _getMonthName(),
                           style: TextStyle(
-                            fontSize: 16,
-                            color: Theme.of(context).primaryColor,
+                            fontSize: screenWidth * 0.05, // 30
+                            color: Theme.of(context).colorScheme.onBackground,
                           ),
                         ),
                       ],
@@ -56,7 +58,7 @@ class JournalEntryCard extends StatelessWidget {
                     Text(
                       _getDayName(),
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: screenWidth * 0.04, // 28
                         color: Theme.of(context).primaryColor,
                       ),
                     ),

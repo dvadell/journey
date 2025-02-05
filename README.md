@@ -18,7 +18,7 @@ samples, guidance on mobile development, and a full API reference.
 # Para ejecutarlo
 
 ```
-../android-studio/bin/studio.sh
+emulator -avd Medium_Phone_API_35
 flutter devices
 flutter run
 ```
